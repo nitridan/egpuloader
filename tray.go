@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
-	"time"
 
 	"github.com/esiqveland/notify"
 	"github.com/getlantern/systray"
@@ -64,7 +62,7 @@ func (tray *egpuTray) onStart() {
 }
 
 func (tray *egpuTray) handleRemove(device *ThunderboltDevice) {
-	if device.action != "remove" {
+	if device.action != removeAction {
 		return
 	}
 
@@ -179,8 +177,5 @@ func (tray *egpuTray) onExit() {
 	var s struct{}
 	tray.monitorChannel <- s
 	close(tray.monitorChannel)
-	fmt.Println("Starting onExit")
-	now := time.Now()
-	ioutil.WriteFile(fmt.Sprintf(`on_exit_%d.txt`, now.UnixNano()), []byte(now.String()), 0644)
 	fmt.Println("Finished onExit")
 }
