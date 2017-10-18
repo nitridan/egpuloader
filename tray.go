@@ -122,10 +122,12 @@ func (tray *egpuTray) getOrCreateMenuItem(device *ThunderboltDevice) *namedMenuI
 	sysPath := device.sysPath
 	deviceMount := systray.AddMenuItem("Load: "+device.deviceName, "Authorizes video adapter")
 	go func() {
-		<-deviceMount.ClickedCh
-		fmt.Println("Mounting device: " + sysPath)
-		loader := createDeviceLoader()
-		loader.loadSudo(sysPath)
+		for {
+			<-deviceMount.ClickedCh
+			fmt.Println("Mounting device: " + sysPath)
+			loader := createDeviceLoader()
+			loader.loadSudo(sysPath)
+		}
 	}()
 
 	return &namedMenuItem{
